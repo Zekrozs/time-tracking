@@ -7,6 +7,14 @@ let data
 let arr
 
 
+// each function should do one thing and one thing only
+
+// break long funtions into smaller ones
+
+// DRY your code like when you did with view and e.target and make it dynamic if possible
+
+// use arrays and objects to make thing dynamic and better integrated to translate keys into values in your code
+
 async function getData(){
     try{
         data = await fetch(`https://zekrozs.github.io/time-tracking/data.json`)
@@ -19,6 +27,7 @@ async function getData(){
 }
 
 function dataOnLoad(){
+     timeFrame[0].classList.add('active')
     arr.forEach((item,index) => {
         if(category[index]){
             category[index].textContent = item['title']
@@ -26,7 +35,7 @@ function dataOnLoad(){
          period[index].textContent = `${item['timeframes']['daily']['current']}hrs`
          previousPeriod[index].textContent = `Yesterday - ${item['timeframes']['daily']['previous']}hrs`
          
-         timeFrame[0].classList.add('active')
+        
     })}
 
 getData().then(result => dataOnLoad())
@@ -36,7 +45,7 @@ let labels = {
                 weekly: 'last week',
                 monthly: 'last month'
             }
-            
+
             let populate = function(e){
              if (arr){
                 timeFrame.forEach(f => f.classList.remove('active'))
