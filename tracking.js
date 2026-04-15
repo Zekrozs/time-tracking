@@ -15,6 +15,8 @@ let arr
 
 // use arrays and objects to make thing dynamic and better integrated to translate keys into values in your code
 
+// always check if items or fetch succexseded before running the code depending on the promise
+
 async function getData(){
     try{
         data = await fetch(`https://zekrozs.github.io/time-tracking/data.json`)
@@ -27,7 +29,7 @@ async function getData(){
 }
 
 function dataOnLoad(){
-     timeFrame[0].classList.add('active')
+    if (arr){timeFrame[0].classList.add('active')
     arr.forEach((item,index) => {
         if(category[index]){
             category[index].textContent = item['title']
@@ -36,7 +38,7 @@ function dataOnLoad(){
          previousPeriod[index].textContent = `Yesterday - ${item['timeframes']['daily']['previous']}hrs`
          
         
-    })}
+    })}} 
 
 getData().then(result => dataOnLoad())
 
