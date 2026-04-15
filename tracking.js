@@ -1,8 +1,8 @@
 'use strict'
-let category = document.querySelectorAll('.category')
-let period = document.querySelectorAll('.period')
-let previousPeriod = document.querySelectorAll('.previous-period')
-let timeFrame = document.querySelectorAll('.time-frame')
+const category = document.querySelectorAll('.category')
+const period = document.querySelectorAll('.period')
+const previousPeriod = document.querySelectorAll('.previous-period')
+const timeFrame = document.querySelectorAll('.time-frame')
 let data
 let arr
 
@@ -42,7 +42,7 @@ function dataOnLoad(){
 
 getData().then(result => dataOnLoad())
 
-let labels = {
+const labels = {
                 daily: 'Yesterday',
                 weekly: 'last week',
                 monthly: 'last month'
