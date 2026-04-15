@@ -5,72 +5,68 @@ let previousPeriod = document.querySelectorAll('.previous-period')
 let timeFrame = document.querySelectorAll('.time-frame')
 let data
 let arr
+
+
 async function getData(){
     try{
         data = await fetch(`https://zekrozs.github.io/time-tracking/data.json`)
         if (data.ok){
             arr = await data.json()
-            
-            function populate(){
+        
+        }
+        else {alert(`${data.status} we have an error`)}
+    } catch{console.log(`something went wrong`)}
+}
 
+function dataOnLoad(){
     arr.forEach((item,index) => {
         if(category[index]){
             category[index].textContent = item['title']
         }
-    })
+         period[index].textContent = `${item['timeframes']['daily']['current']}hrs`
+         previousPeriod[index].textContent = `Yesterday - ${item['timeframes']['daily']['previous']}hrs`
+         
+         timeFrame[0].classList.add('active')
+    })}
 
-    timeFrame.forEach((frame,index) => {
-        if(index == 0){frame.addEventListener('click', function(){
-          document.querySelector(`.daily`).classList.add('active')
-           document.querySelector(`.weekly`).classList.remove('active')
-            document.querySelector(`.monthly`).classList.remove('active')
-          arr.forEach((item, index) =>{
-            if (period[index]){
-                period[index].textContent = `${item['timeframes']['daily']['current']}hrs`
-                previousPeriod[index].textContent = `Yesterday - ${item['timeframes']['daily']['previous']}hrs`
-            }
-          } )  
-        })}
-        
-   else if(index == 1){
-    frame.addEventListener('click', function(){
-        document.querySelector(`.daily`).classList.remove('active')
-        document.querySelector(`.weekly`).classList.add('active')
-          document.querySelector(`.monthly`).classList.remove('active')
-        arr.forEach((item, index) => {
-            if(period[index])
-                {period[index].textContent = `${item['timeframes']['weekly']['current']}hrs`
-                previousPeriod[index].textContent = `Last week - ${item['timeframes']['weekly']['previous']}hrs`
+getData().then(result => dataOnLoad())
+
+let labels = {
+                daily: 'Yesterday',
+                weekly: 'last week',
+                monthly: 'last month'
             }
             
-        })
-    })
-   }
-else if(index == 2){
-    frame.addEventListener('click', function(){
-          document.querySelector(`.daily`).classList.remove('active')
-           document.querySelector(`.weekly`).classList.remove('active')
-            document.querySelector(`.monthly`).classList.add('active')
-        arr.forEach((item, index) => {
-            if(period[index]){
-                period[index].textContent = `${item['timeframes']['monthly']['current']}hrs`
-                    previousPeriod[index].textContent = `Last Month - ${item['timeframes']['monthly']['previous']}hrs`
+            let populate = function(e){
+             if (arr){
+                timeFrame.forEach(f => f.classList.remove('active'))
+                e.target.classList.add('active')
+                let view = e.target.dataset.view
+                  arr.forEach((item, index) =>{
+                  if (period[index]){
+                  period[index].textContent = `${item['timeframes'][view]['current']}hrs` 
+                  previousPeriod[index].textContent = `${labels[view]} - ${item['timeframes'][view]['previous']}hrs`
             }
-        })
-    })
-}    
+          } )  
+        }
+        else{alert(`and error occured. please wait before clicking`)}
+        }
+        
+
+    timeFrame.forEach((frame) => {
+
+      {frame.addEventListener('click', populate )}
+        
+ 
 })
 
-}
-populate()
-        }
-        else {console.log(`${data.status} we have an error`)}
-    } catch{console.log(`something went wrong`)}
-}
 
 
 
-getData()
+
+
+
+
 
 
 
